@@ -6,7 +6,7 @@ public enum ShippingMethod {
 	private int value;
 	private String name;
 
-	ShippingMethod(int value, String name) {
+	private ShippingMethod(int value, String name) {
         this.value = value;
         this.name = name;
     }
@@ -15,7 +15,11 @@ public enum ShippingMethod {
         return value;
     }
 
-    @Override
+    public String getName() {
+		return name;
+	}
+
+	@Override
     public String toString() {
         return name;
     }

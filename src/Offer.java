@@ -4,6 +4,7 @@ public class Offer implements Comparable<Offer>{
 	private double importTax;
 	private boolean includingImportTax;
 	private ShippingCompanies shippingCompany;
+	public String SHIPPING_CURRENCY = "$";
 
 	public Offer(ShippingCompanies shippingCompany) {
 		this.shippingCompany = shippingCompany;
@@ -39,7 +40,7 @@ public class Offer implements Comparable<Offer>{
 		builder.append(String.format("Shipped via %s\n", shippingCompany));
 		builder.append(String.format("Shipping fee: %.2f$\n", baseShippingFee));
 		builder.append("Import tax: ");
-		builder.append((includingImportTax) ? Product.toStringPrice(importTax) : "not included!");
+		builder.append((includingImportTax) ? Product.toStringPrice(importTax, SHIPPING_CURRENCY) : "not included!");
 		return builder.toString();
 	}
 	

@@ -64,7 +64,7 @@ public class Order {
 		builder.append(String.format("%s x %d %s\n",
 				product,
 				amount, 
-				Product.toStringPrice(total)));
+				Product.toStringPrice(total, product.getCurrency())));
 		
 		if(shippingMethod != ShippingMethod.NoShipping && bestOffer != null) {
 			
@@ -75,7 +75,7 @@ public class Order {
 			total += bestOffer.getShippingTotal();
 		}
 		
-		builder.append(String.format("\nTotal: %s", Product.toStringPrice(total)));
+		builder.append(String.format("\nTotal: %s", Product.toStringPrice(total, product.getCurrency())));
 		return builder.toString();
 	}
 	
