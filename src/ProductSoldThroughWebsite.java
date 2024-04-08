@@ -8,9 +8,9 @@ public class ProductSoldThroughWebsite extends Product {
 	private String destCountery;
 	private List<ShippingMethod> shippping;
 	
-	public ProductSoldThroughWebsite(String productName, int costPrice, int sellingPrice, 
-			double productWeight, String destCountery, List<ShippingMethod> shippping) {
-		super(productName, costPrice, sellingPrice, productWeight);
+	public ProductSoldThroughWebsite(String serialNumber, String productName, double costPrice, double sellingPrice, 
+			double productWeight, int stock, String destCountery, List<ShippingMethod> shippping) {
+		super(serialNumber, productName, costPrice, sellingPrice, productWeight,stock);
 		this.shippping = new ArrayList<>(shippping);
 		this.destCountery = destCountery;
 		this.currency = "$";

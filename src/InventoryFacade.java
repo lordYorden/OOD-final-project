@@ -6,6 +6,13 @@ public class InventoryFacade {
 	//private Store store;
 	//private Website website;
 	
+	public boolean addProduct(ProductType type) {
+		return false;
+	}
+	
+	
+	
+	
 	
 
 }

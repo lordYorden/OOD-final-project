@@ -1,7 +1,7 @@
 public class ProductsSoldInStore extends Product {
 
-	public ProductsSoldInStore(String productName, int costPrice, int sellingPrice, double productWeight) {
-		super(productName, costPrice, sellingPrice, productWeight);
+	public ProductsSoldInStore(String serialNumber, String productName, double costPrice, double sellingPrice, double productWeight, int stock) {
+		super(serialNumber,productName, costPrice, sellingPrice, productWeight, stock);
 	}
 
 	@Override

@@ -4,27 +4,35 @@ import java.util.Set;
 public abstract class Product {
 	
 	protected String productName;
-	protected int costPrice;
-	protected int sellingPrice;
+	protected double costPrice;
+	protected double sellingPrice;
 	protected int stock;
 	protected double productWeight;
 	protected Set<Order> orders;
 	protected String currency;
+	private String serialNumber;
 	
 	public abstract ShippingMethod getShippingMethod();
 
-	public Product(String productName, int costPrice, int sellingPrice, double productWeight, int stock) {
-		this.currency = " nis";
+	public Product(String serialNumber, String productName, double costPrice, double sellingPrice, double productWeight, int stock) {
+		this.currency = "₪";
 		this.productName = productName;
 		this.costPrice = costPrice;
 		this.sellingPrice = sellingPrice;
 		this.stock = stock;
 		this.productWeight= productWeight;
+		this.serialNumber = serialNumber;
 		this.orders = new LinkedHashSet<>();
 	}
 	
-	public Product(String productName, int costPrice, int sellingPrice, double productWeight) {
-		this(productName, costPrice, sellingPrice, productWeight , 0);
+	/*
+	 * public Product(String serialNumber, String productName, double costPrice,
+	 * double sellingPrice, double productWeight) { this(serialNumber, productName,
+	 * costPrice, sellingPrice, productWeight , 0); }
+	 */
+
+	public String getSerialNumber() {
+		return serialNumber;
 	}
 
 	public String getCurrency() {
@@ -45,13 +53,13 @@ public abstract class Product {
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
-	public int getCostPrice() {
+	public double getCostPrice() {
 		return costPrice;
 	}
 	public void setCostPrice(int costPrice) {
 		this.costPrice = costPrice;
 	}
-	public int getSellingPrice() {
+	public double getSellingPrice() {
 		return sellingPrice;
 	}
 	public void setSellingPrice(int sellingPrice) {
