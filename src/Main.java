@@ -12,7 +12,7 @@ public class Main {
 		
 		ShippingMethod shippingMethod = p.getShippingMethod();
 		//TODO checks for stock when creating order
-		Order o = new Order(new Customer("Yarin", "0547731355"), p, 4, shippingMethod);
+		Order o = new Order(new Customer("Yarin", "0534298765"), p, 4, shippingMethod);
 		ShippingCompany shippingCompany1 = new FedEx(new Contact("Shay", "0546092715"));
 		ShippingCompany shippingCompany2 = new DHL(new Contact("itay", "0549411471"));
 		
