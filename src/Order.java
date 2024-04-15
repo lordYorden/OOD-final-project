@@ -1,17 +1,26 @@
+import java.util.Objects;
 
 public class Order {
 	private Customer customer; 
 	private Product product;
 	private int amount;
-	ShippingMethod shippingMethod;
-	private Offer bestOffer;
+	private String serialNumber;
+	protected ShippingMethod shippingMethod;
 	
-	public Order(Customer customer, Product product, int amount, ShippingMethod shippingMethod) {
+	public Order(String serialNumber, Customer customer, Product product, int amount, ShippingMethod shippingMethod) {
 		this.customer = customer;
 		this.product = product;
 		this.amount = amount;
+		this.serialNumber =	serialNumber;
 		this.shippingMethod = shippingMethod;
-		this.bestOffer = null;
+	}
+	
+	public ShippingMethod getShippingMethod() {
+		return shippingMethod;
+	}
+
+	public void setShippingMethod(ShippingMethod shippingMethod) {
+		this.shippingMethod = shippingMethod;
 	}
 	
 	public double getTotalWeight() {
@@ -33,6 +42,7 @@ public class Order {
 	}
 	public void setProduct(Product product) {
 		this.product = product;
+		
 	}
 	public int getAmount() {
 		return amount;
@@ -40,45 +50,47 @@ public class Order {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-
-	public ShippingMethod getShippingMethod() {
-		return shippingMethod;
+	
+	public String getSerialNumber() {
+		return serialNumber;
 	}
 
-	public void setShippingMethod(ShippingMethod shippingMethod) {
-		this.shippingMethod = shippingMethod;
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+	
+	public double getPriceTotal() {
+		return getTotalSellingPrice();
 	}
 
-	public void setBestOffer(Offer bestOffer) {
-		this.bestOffer = bestOffer;
+	@Override
+	public int hashCode() {
+		return Objects.hash(serialNumber);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		return Objects.equals(serialNumber, other.serialNumber);
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		
-		double total = getTotalSellingPrice();
-		
 		builder.append("Order details: \n");
 		
 		builder.append(String.format("%s x %d %s\n",
 				product,
 				amount, 
-				Product.toStringPrice(total, product.getCurrency())));
+				Product.toStringPrice(getTotalSellingPrice(), product.getCurrency())));
 		
-		if(shippingMethod != ShippingMethod.NoShipping && bestOffer != null) {
-			
-			//builder.append("\nShipping details: \n");
-			builder.append(shippingMethod);
-			builder.append("\n\n");
-			builder.append(String.format("%s\n", bestOffer));
-			total += bestOffer.getShippingTotal();
-		}
-		
-		builder.append(String.format("\nTotal: %s", Product.toStringPrice(total, product.getCurrency())));
+		builder.append(String.format("\nTotal: %s", Product.toStringPrice(getPriceTotal(), product.getCurrency())));
 		return builder.toString();
 	}
-	
-	
-
 }

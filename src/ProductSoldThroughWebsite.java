@@ -33,7 +33,7 @@ public class ProductSoldThroughWebsite extends Product {
 			i = 1;
 			System.out.println("Select the shimpment type: ");
 			for (ShippingMethod shippingMethod : shippping) {
-				System.out.format("%d. %s\n",i, shippingMethod);
+				System.out.format("%d. %s\n",i, shippingMethod.getName());
 				i++;
 			}
 			

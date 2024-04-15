@@ -23,7 +23,7 @@ public enum ShippingMethod {
 
 	@Override
     public String toString() {
-		return String.format("%d. %s", value, describtion);
+		return String.format("%d. %s", value+1, describtion);
     }
 
     public static ShippingMethod getShippingMethod(int value) {
@@ -36,9 +36,11 @@ public enum ShippingMethod {
 		while(true) {
 			System.out.println("Please select the method of shipping:");
 			
-			for (ShippingMethod s : ShippingMethod.values()) {
-				System.out.println(s);
-			}
+//			for (ShippingMethod s : ShippingMethod.values()) {
+//				System.out.println(s);
+//			}
+			System.out.println(ShippingMethod.StandardShipping);
+			System.out.println(ShippingMethod.ExpressShipping);
 			
 			int select = 0;
 			ShippingMethod shippingMethod = null;
@@ -46,7 +48,7 @@ public enum ShippingMethod {
 			input.nextLine(); // clears buffer
 			
 			try {
-				shippingMethod = ShippingMethod.getShippingMethod(select);
+				shippingMethod = ShippingMethod.getShippingMethod(--select);
 			}catch (IllegalArgumentException e) {
 				System.out.println(e.getMessage());
 				continue;

@@ -7,17 +7,18 @@ public class Main {
 		List<ShippingMethod> ship = new ArrayList<>();
 		ship.add(ShippingMethod.ExpressShipping);
 		ship.add(ShippingMethod.StandardShipping);
-		Product p = new ProductsSoldInStore("0256325889", "Joyride", 5, 20, 0.25, 2);
-				//,"Isreal", ship);
+		Product p = new ProductSoldThroughWebsite("0256325889", "Joyride", 5, 20, 0.25, 2
+				//);
+				,"Isreal", ship);
 		
 		ShippingMethod shippingMethod = p.getShippingMethod();
 		//TODO checks for stock when creating order
-		Order o = new Order(new Customer("Yarin", "0534298765"), p, 4, shippingMethod);
+		ShippingOrder o = new ShippingOrder("156455263", new Customer("Yarin", "0534298765"), p, 4, shippingMethod);
 		ShippingCompany shippingCompany1 = new FedEx(new Contact("Shay", "0546092715"));
 		ShippingCompany shippingCompany2 = new DHL(new Contact("itay", "0549411471"));
 		
 		
-		if(shippingMethod != ShippingMethod.NoShipping) {
+		//if(shippingMethod != ShippingMethod.NoShipping) {
 			List<OrderObserver> observers = new ArrayList<>();
 			observers.add(shippingCompany1);
 			observers.add(shippingCompany2);
@@ -29,7 +30,7 @@ public class Main {
 					minOffer = curr;
 			}
 			o.setBestOffer(minOffer);
-		}
+		//}
 		System.out.println(o);
 	}
 }
