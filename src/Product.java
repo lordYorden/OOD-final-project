@@ -114,14 +114,10 @@ public abstract class Product {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Product))
 			return false;
 		Product other = (Product) obj;
-		return Objects.equals(serialNumber, other.serialNumber);
+		return serialNumber.equals(other.serialNumber);
 	}
 	
 	public static class OrderMemento{
