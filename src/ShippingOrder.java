@@ -2,11 +2,19 @@
 public class ShippingOrder extends Order{
 	
 	private Offer bestOffer;
+	private ShippingMethod shippingMethod;
+	
 
 	public ShippingOrder(String serialNumber, Customer customer, Product product, int amount,
 			ShippingMethod shippingMethod) {
-		super(serialNumber, customer, product, amount, shippingMethod);
+		super(serialNumber, customer, product, amount);
 		this.bestOffer = null;
+		this.shippingMethod = shippingMethod;
+	}
+	
+	
+	public ShippingMethod getShippingMethod() {
+		return shippingMethod;
 	}
 
 	public void setBestOffer(Offer bestOffer) {

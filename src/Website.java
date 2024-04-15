@@ -11,7 +11,7 @@ public class Website implements OrderObservable{
 
 	//notify all method
 	@Override
-	public Offer getBestOffer(Order Order) { 
+	public Offer getBestOffer(ShippingOrder Order) { 
 		Offer minOffer = null;
 		//gets the best offer
 		for (OrderObserver observer : observers) {
@@ -23,7 +23,7 @@ public class Website implements OrderObservable{
 		//o.setBestOffer(minOffer);
 	}
 
-	public void addNewOrder(String serialNumber, Order order) {
+	public void addNewOrder(String serialNumber, ShippingOrder order) {
 		Offer offer = getBestOffer(order);
 		if(offer == null){
 			throw new RuntimeException("Error! No shipping company was added!");

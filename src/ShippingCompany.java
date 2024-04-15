@@ -24,11 +24,10 @@ public abstract class ShippingCompany implements OrderObserver{
 	}
 	
 	@Override
-	public Offer getOffer(Order order) {
-		if(!(order instanceof ShippingOrder)){
+	public Offer getOffer(ShippingOrder order) {
+		if(order.getShippingMethod() == ShippingMethod.NoShipping){
 			throw new RuntimeException("Error! No shipping for this order!");
 		}   
-		
 		
 		ShippingCalculator calc = getCalculator(order.getShippingMethod());
 		return calc.calcShippingFee(order);

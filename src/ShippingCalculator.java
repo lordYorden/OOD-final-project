@@ -1,5 +1,5 @@
 
 public interface ShippingCalculator {
-	public Offer calcShippingFee(Order order);
-	public double calcImportTax(Order order);
+	public Offer calcShippingFee(ShippingOrder order);
+	public double calcImportTax(ShippingOrder order);
 }

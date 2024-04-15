@@ -2,10 +2,10 @@
 public abstract class StandardShippingCalculator implements ShippingCalculator {
 
 	@Override
-	public abstract Offer calcShippingFee(Order order);
+	public abstract Offer calcShippingFee(ShippingOrder order);
 
 	@Override
-	public double calcImportTax(Order order) {
+	public double calcImportTax(ShippingOrder order) {
 		return -1f;
 	}
 

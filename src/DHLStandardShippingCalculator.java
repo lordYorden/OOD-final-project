@@ -5,7 +5,7 @@ public class DHLStandardShippingCalculator extends StandardShippingCalculator{
 	private final double MAX_BASE_FEE = 100f;
 	
 	@Override
-	public Offer calcShippingFee(Order order) {
+	public Offer calcShippingFee(ShippingOrder order) {
 		Offer offer = new Offer(ShippingCompanies.DHL);
 		offer.setShippingPrice(Math.min(PRECENT_FEE*order.getTotalSellingPrice(), MAX_BASE_FEE));
 		offer.setImportTax(calcImportTax(order));

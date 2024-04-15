@@ -14,7 +14,6 @@ public abstract class Product {
 	protected Set<Order> orders;
 	protected String currency;
 	private String serialNumber;
-	//private ProductType productType;
 	
 	public abstract ShippingMethod getShippingMethod();
 
@@ -38,46 +37,36 @@ public abstract class Product {
 	public String getSerialNumber() {
 		return serialNumber;
 	}
+	
+	public double getSellingPrice() {
+		return sellingPrice;
+	}
 
-	public String getCurrency() {
-		return currency;
+	public void setSellingPrice(double sellingPrice) {
+		this.sellingPrice = sellingPrice;
 	}
 
 	public double getProductWeight() {
 		return productWeight;
 	}
 
-	public void setProductWeight(double productWeight) {
-		this.productWeight = productWeight;
+	public String getCurrency() {
+		return currency;
 	}
-
+	
 	public String getProductName() {
 		return productName;
-	}
-	public void setProductName(String productName) {
-		this.productName = productName;
-	}
-	public double getCostPrice() {
-		return costPrice;
-	}
-	public void setCostPrice(int costPrice) {
-		this.costPrice = costPrice;
-	}
-	public double getSellingPrice() {
-		return sellingPrice;
-	}
-	public void setSellingPrice(int sellingPrice) {
-		this.sellingPrice = sellingPrice;
 	}
 	
 	public int getStock() {
 		return stock;
 	}
 	public void setStock(int stock) {
-		this.stock = stock;
+		this.stock = Math.min(stock, 0);
 	}
+	
 	public void decreaseStock(int amountOrder) {
-		this.stock = Math.min(stock - amountOrder, 0);
+		setStock(stock - amountOrder);
 	}
 	
 	public boolean addOrder(Order order) {

@@ -1,4 +1,4 @@
 
 public interface OrderObserver {
-	public Offer getOffer(Order order); //update method
+	public Offer getOffer(ShippingOrder order); //update method
 }

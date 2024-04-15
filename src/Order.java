@@ -5,22 +5,13 @@ public class Order {
 	private Product product;
 	private int amount;
 	private String serialNumber;
-	protected ShippingMethod shippingMethod;
 	
-	public Order(String serialNumber, Customer customer, Product product, int amount, ShippingMethod shippingMethod) {
+	public Order(String serialNumber, Customer customer, Product product, int amount) {
 		this.customer = customer;
 		this.product = product;
 		this.amount = amount;
 		this.serialNumber =	serialNumber;
-		this.shippingMethod = shippingMethod;
-	}
-	
-	public ShippingMethod getShippingMethod() {
-		return shippingMethod;
-	}
-
-	public void setShippingMethod(ShippingMethod shippingMethod) {
-		this.shippingMethod = shippingMethod;
+		
 	}
 	
 	public double getTotalWeight() {

@@ -29,9 +29,6 @@ public class Menu {
 					int newStock = Integer.parseInt(input.nextLine());				
 					facade.updateProductStock(serial, newStock);
 					break;
-				case ShowInventory:
-					System.out.println(facade);
-					break;
 				case AddOrder:
 					System.out.println("Enter the product's serial number: ");
 					String serialNum = input.nextLine();
@@ -42,14 +39,17 @@ public class Menu {
 				case UndoOrder:
 					facade.undoOrder();
 					break;
-				case PrintOrdersOfProduct:
-					System.out.println("Enter the product's serial number: ");
-					String serialNumber = input.nextLine();
-					facade.PrintOrdersOfProduct(serialNumber);
 				case ShowProductInfo:
 					System.out.println("Enter the product's serial number: ");
 					String serialNumber1 = input.nextLine();
 					facade.printProduct(serialNumber1);
+				case ShowInventory:
+					System.out.println(facade);
+					break;
+				case PrintOrdersOfProduct:
+					System.out.println("Enter the product's serial number: ");
+					String serialNumber = input.nextLine();
+					facade.PrintOrdersOfProduct(serialNumber);  
 				default:
 					throw new RuntimeException("Not implemented yet!");
 				case Exit:
