@@ -4,14 +4,30 @@ import java.util.Stack;
 public class StoreFacade {
 	private Website website;
 	private Inventory inventory;
-	private final Customer customer = new Customer("yarden", "0547731355");
+	private Customer customer = new Customer("yarden", "0547731355");
 	private Stack<Product.OrderMemento> previousOrders; 
+	private static StoreFacade _instance = null;
 	
-	public StoreFacade() {
+	private StoreFacade() {
 		this.website = new Website();
 		this.inventory = new Inventory();
 		this.previousOrders = new Stack<>();
 	}
+
+	public static StoreFacade getInstance() {
+		if(_instance == null)
+			_instance = new StoreFacade();
+		return _instance;
+	}
+	
+	public Customer getCustomer() {
+		return customer;
+	}
+	
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+	
 
 	public void updateProductStock(String serialNumber, int newStock) {
 		inventory.updateProductStock(serialNumber, newStock);
