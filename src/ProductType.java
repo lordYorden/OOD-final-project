@@ -2,9 +2,9 @@ import java.util.Scanner;
 
 public enum ProductType {
 
-	SoldInStore(1, "Product that is sold in Store"),
-	SoldThroughWebsite(2, "Product that is sold Through the Website"),
-	SoldToWholesalers(3, "Product that is sold directly to Wholesalers");
+	SoldInStore(1, "Products that are sold in Store"),
+	SoldThroughWebsite(2, "Products that are sold Through the Website"),
+	SoldToWholesalers(3, "Products that is sold directly to Wholesalers");
 	
 	int value;
 	String description;

@@ -14,6 +14,7 @@ public class ProductSoldThroughWebsite extends Product {
 		this.shippping = new ArrayList<>(shippping);
 		this.destCountery = destCountery;
 		this.currency = "$";
+		this.productType = ProductType.SoldThroughWebsite;
 	}
 
 	public String getDestCountery() {

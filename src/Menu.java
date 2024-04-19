@@ -10,12 +10,13 @@ public class Menu {
 	
 	public static void main(String[] args) throws IOException {
 		MenuOption menuOption = null;
+		ProductType type = null;
 		do {
 			try {
 				menuOption = MenuOption.getMenuOptionFromUser(input);
 				switch (menuOption) {
 				case AddProduct:
-					ProductType type = ProductType.getProductTypeFromUser(input);
+					type = ProductType.getProductTypeFromUser(input);
 					addProduct(type);
 					break;
 				case RemoveProduct:
@@ -30,14 +31,19 @@ public class Menu {
 					facade.updateProductStock(serial, newStock);
 					break;
 				case AddOrder:
+					type = ProductType.getProductTypeFromUser(input);
+					System.out.println(facade.getProductsOfType(type));
 					System.out.println("Enter the product's serial number: ");
 					String serialNum = input.nextLine();
 					System.out.println("How many would you like to order? ");
 					int amount = Integer.parseInt(input.nextLine());
-					facade.addOrder(serialNum, amount);
+					System.out.println("Enter the order's serial number: ");
+					String orderSerialNum = input.nextLine();
+					facade.addOrder(serialNum, amount, orderSerialNum);
 					break;
 				case UndoOrder:
 					facade.undoOrder();
+					System.out.println("Order was successfully canceled!");
 					break;
 				case ShowProductInfo:
 					System.out.println("Enter the product's serial number: ");

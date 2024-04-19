@@ -10,10 +10,11 @@ public abstract class Product {
 	protected double costPrice;
 	protected double sellingPrice;
 	protected int stock;
-	protected double productWeight;
+	protected double weight;
 	protected Set<Order> orders;
 	protected String currency;
 	private String serialNumber;
+	protected ProductType productType;
 	
 	public abstract ShippingMethod getShippingMethod();
 
@@ -23,16 +24,14 @@ public abstract class Product {
 		this.costPrice = costPrice;
 		this.sellingPrice = sellingPrice;
 		this.stock = stock;
-		this.productWeight= productWeight;
+		this.weight= productWeight;
 		this.serialNumber = serialNumber;
 		this.orders = new LinkedHashSet<>();
 	}
-	
-	/*
-	 * public Product(String serialNumber, String productName, double costPrice,
-	 * double sellingPrice, double productWeight) { this(serialNumber, productName,
-	 * costPrice, sellingPrice, productWeight , 0); }
-	 */
+
+	public ProductType getProductType() {
+		return productType;
+	}
 
 	public String getSerialNumber() {
 		return serialNumber;
@@ -46,8 +45,12 @@ public abstract class Product {
 		this.sellingPrice = sellingPrice;
 	}
 
-	public double getProductWeight() {
-		return productWeight;
+	public double getWeight() {
+		return weight;
+	}
+	
+	public double getProfit() {
+		return sellingPrice-costPrice;
 	}
 
 	public String getCurrency() {
@@ -85,6 +88,9 @@ public abstract class Product {
 		builder.append(productName);
 		builder.append(" ");
 		builder.append(toStringPrice(sellingPrice, currency));
+		builder.append("\n");
+		builder.append("SerialNo: ");
+		builder.append(serialNumber);
 		return builder.toString();
 	}
 
@@ -112,14 +118,17 @@ public abstract class Product {
 	public static class OrderMemento{
 		private Product product;
 		private Set<Order> orders;
+		private int currentStock;
 		
 		private OrderMemento(Product product, Set<Order> orders) {
 			this.product = product;
 			this.orders = new HashSet<Order>(orders);
+			this.currentStock = product.stock;
 		}
 		
 		public void setMemento() {
 			this.product.orders = this.orders; 
+			this.product.stock = currentStock;
 		}
 	}
 	

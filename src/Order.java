@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public class Order {
+public class Order{
 	private Customer customer; 
 	private Product product;
 	private int amount;
@@ -11,11 +11,18 @@ public class Order {
 		this.product = product;
 		this.amount = amount;
 		this.serialNumber =	serialNumber;
-		
 	}
 	
 	public double getTotalWeight() {
-		return product.getProductWeight() * amount;
+		return product.getWeight() * amount;
+	}
+	
+	public String getOrderInvoice(Invoiceable format) {
+		return format.getInvoice(this);
+	}
+	
+	public double getTotalOrderProfit() {
+		return product.getProfit() * amount;
 	}
 	
 	public double getTotalSellingPrice() {
@@ -25,6 +32,11 @@ public class Order {
 	public Customer getCustomer() {
 		return customer;
 	}
+	
+	public String getInvoices(Invoiceable format) {
+		return format.getInvoice(this);
+	}
+	
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
@@ -61,20 +73,20 @@ public class Order {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Order))
 			return false;
 		Order other = (Order) obj;
 		return Objects.equals(serialNumber, other.serialNumber);
+	}
+	
+	public String getCurrency(){
+		return product.getCurrency();
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Order details: \n");
+		//builder.append("Order details: \n");
 		
 		builder.append(String.format("%s x %d %s\n",
 				product,

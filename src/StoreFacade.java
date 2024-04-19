@@ -10,6 +10,7 @@ public class StoreFacade {
 	public StoreFacade() {
 		this.website = new Website();
 		this.inventory = new Inventory();
+		this.previousOrders = new Stack<>();
 	}
 
 	public void updateProductStock(String serialNumber, int newStock) {
@@ -29,7 +30,7 @@ public class StoreFacade {
 		return inventory.toString();
 	}
 
-	public void addOrder(String serialNumber, int amount) {
+	public void addOrder(String serialNumber, int amount, String orderSerialNum) {
 		Product product = inventory.findProduct(serialNumber);
 		ShippingMethod method = product.getShippingMethod();
 		
@@ -42,21 +43,25 @@ public class StoreFacade {
 		Order order = null;
 		
 		if(method != ShippingMethod.NoShipping) {
-			order = new ShippingOrder(serialNumber, customer, product, amount, method);
-			website.addNewOrder(serialNumber, (ShippingOrder)order);
+			order = new ShippingOrder(orderSerialNum, customer, product, amount, method);
+			website.addNewOrder((ShippingOrder)order);
 		}else {
-			order = new Order(serialNumber, customer, product, amount);
+			order = new Order(orderSerialNum, customer, product, amount);
 		}
 		
-		product.decreaseStock(amount);
 		previousOrders.add(product.createOrderMemento());
 		product.addOrder(order);
+		product.decreaseStock(amount);
 	}
 
 	public void undoOrder() {
 		if(previousOrders.empty())
 			throw new RuntimeException("Error! No products were ordered yet!");
 		previousOrders.pop().setMemento();
+	}
+	
+	public String getProductsOfType(ProductType type) {
+		return inventory.getProductsOfType(type);
 	}
 
 	public void PrintOrdersOfProduct(String serialNumber) {
@@ -71,8 +76,34 @@ public class StoreFacade {
 		
 	}
 
-	public void printProduct(String serialNumber) {
+	public String printProduct(String serialNumber) {
 		Product product = inventory.findProduct(serialNumber);
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(String.format("Type: %s",
+				product.getProductType().getDescription()));
+		
+		buffer.append(String.format("\nName: %s\nSerialNo: %s\nCurrent stock %d",
+				product.getProductName(), product.getSerialNumber(), product.getStock()));
+		
+		buffer.append("\nOrders:\n");
+		
+		Iterator<Order> orders = product.getOrders();
+		while(orders.hasNext()) {
+			buffer.append(orders.next());
+		}
+		
+		
+		
+		
+		
+		
+		
+		
 		System.out.println(product);
+		
+		
+		
+		return serialNumber;
 	}
 }

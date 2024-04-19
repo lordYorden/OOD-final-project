@@ -23,7 +23,7 @@ public class Website implements OrderObservable{
 		//o.setBestOffer(minOffer);
 	}
 
-	public void addNewOrder(String serialNumber, ShippingOrder order) {
+	public void addNewOrder(ShippingOrder order) {
 		Offer offer = getBestOffer(order);
 		if(offer == null){
 			throw new RuntimeException("Error! No shipping company was added!");

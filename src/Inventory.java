@@ -60,8 +60,26 @@ public class Inventory{
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Product currently in Store:\n");
-		builder.append(products);
+		for (Product product : products) {
+			builder.append(product);
+			builder.append("\n");
+		}
 		return builder.toString();
+	}
+
+	public String getProductsOfType(ProductType type) {
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(type.getDescription());
+		buffer.append(":\n");
+		for (Product product : products) {
+			if(product.getProductType() == type) {
+				buffer.append(product);
+				buffer.append("\n");
+			}
+		}
+		return buffer.toString();
+		
 	}
 	
 	
