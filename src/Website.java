@@ -29,7 +29,7 @@ public class Website implements OrderObservable{
 			throw new RuntimeException("Error! No shipping company was added!");
 		}
 
-		((ShippingOrder)order).setBestOffer(offer);
+		order.setBestOffer(offer);
 	}
 
 	@Override

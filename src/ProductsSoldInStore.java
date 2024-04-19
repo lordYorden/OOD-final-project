@@ -1,3 +1,6 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class ProductsSoldInStore extends Product {
 	
 	private Invoiceable forCustomer;
@@ -15,11 +18,11 @@ public class ProductsSoldInStore extends Product {
 	}
 
 	@Override
-	public String getOrderInvoices(Order order) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(forCustomer.getInvoice(order));
-		buffer.append(forAccountent.getInvoice(order));
-		return buffer.toString();
+	public Set<Invoiceable> getInvoicesFormat() {
+		Set<Invoiceable> formats = new HashSet<>();
+		formats.add(forAccountent);
+		formats.add(forCustomer);
+		return formats;
 	}
 	 
 }

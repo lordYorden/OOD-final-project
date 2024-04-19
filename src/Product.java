@@ -26,14 +26,15 @@ public abstract class Product {
 		this.weight= productWeight;
 		this.serialNumber = serialNumber;
 		this.orders = new LinkedHashSet<>();
+		this.productType = productType;
 	}
 	public abstract ShippingMethod getShippingMethod();
-	
-	public abstract String getOrderInvoices(Order order);
 
 	public ProductType getProductType() {
 		return productType;
 	}
+	
+	public abstract Set<Invoiceable> getInvoicesFormat();
 
 	public String getSerialNumber() {
 		return serialNumber;
@@ -67,7 +68,7 @@ public abstract class Product {
 		return stock;
 	}
 	public void setStock(int stock) {
-		this.stock = Math.min(stock, 0);
+		this.stock = Math.max(stock, 0);
 	}
 	
 	public void decreaseStock(int amountOrder) {
@@ -87,6 +88,7 @@ public abstract class Product {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
+		
 		builder.append(productName);
 		builder.append(" ");
 		builder.append(toStringPrice(sellingPrice, currency));
@@ -94,6 +96,56 @@ public abstract class Product {
 		builder.append("SerialNo: ");
 		builder.append(serialNumber);
 		return builder.toString();
+	}
+	
+	public String getOrderHistoryOfProduct(Set<Invoiceable> formats) {
+		StringBuffer buffer = new StringBuffer();
+		double profit = 0f;
+		
+		buffer.append("\nOrders:\n");
+		
+		if(orders.isEmpty()){
+			buffer.append("No Orders for this product yet!");
+		}
+		
+		Iterator<Order> it = this.orders.iterator();
+		while(it.hasNext()) {
+			Order order = it.next();
+			
+			buffer.append(String.format("\nDetails for order number %s: \n", order.getSerialNumber()));
+			buffer.append(order);
+			
+			buffer.append("Invoices:\n");
+			
+			if(formats.isEmpty()){
+				buffer.append("No invoices for this order!");
+			}
+			
+			for (Invoiceable format : formats) {
+				buffer.append(order.getInvoice(format));
+			}
+			
+			profit += order.getTotalOrderProfit();
+		}
+		
+		buffer.append(String.format("\nTotal Profit for product: %s\n",
+				Product.toStringPrice(profit, currency)));
+		
+		return buffer.toString();
+	}
+	
+	public String getProductInfo() {
+
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(String.format("Type: %s",
+				productType.getDescription()));
+		
+		buffer.append(String.format("\nName: %s\nSerialNo: %s\nCurrent stock: %d",
+				productName, serialNumber, stock));
+		
+		buffer.append(getOrderHistoryOfProduct(getInvoicesFormat()));
+		
+		return buffer.toString();
 	}
 
 	public static String toStringPrice(double price, String currency) {

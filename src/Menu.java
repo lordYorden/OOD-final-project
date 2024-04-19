@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Menu {
 	
 	public static final Scanner input = new Scanner(System.in);
-	public static final StoreFacade facade = new StoreFacade();
+	public static final StoreFacade facade = StoreFacade.getInstance();
 	
 	public static void main(String[] args) throws IOException {
 		MenuOption menuOption = null;
@@ -48,14 +48,16 @@ public class Menu {
 				case ShowProductInfo:
 					System.out.println("Enter the product's serial number: ");
 					String serialNumber1 = input.nextLine();
-					facade.printProduct(serialNumber1);
+					System.out.println(facade.getProductInfo(serialNumber1));
+					break;
 				case ShowInventory:
 					System.out.println(facade);
 					break;
 				case PrintOrdersOfProduct:
 					System.out.println("Enter the product's serial number: ");
 					String serialNumber = input.nextLine();
-					facade.PrintOrdersOfProduct(serialNumber);  
+					facade.getOrderHistoryOfProduct(serialNumber);
+					break;
 				default:
 					throw new RuntimeException("Not implemented yet!");
 				case Exit:

@@ -1,3 +1,5 @@
+
+
 public class ShippingOrder extends Order{
 	
 	private Offer bestOffer;
@@ -20,11 +22,6 @@ public class ShippingOrder extends Order{
 		this.bestOffer = bestOffer;
 	}
 
-	@Override
-	public String getInvoices() {
-		throw new RuntimeException("Error! Can't output invoices for an order intented for shipping!");
-	}
-
 
 	@Override
 	public double getPriceTotal() {
@@ -32,16 +29,18 @@ public class ShippingOrder extends Order{
 			throw new RuntimeException("Error! No shipping offer was taken!");
 		return super.getPriceTotal() + bestOffer.getShippingTotal();
 	}
+	
+	public String getShippingdDetails() {
+		if(shippingMethod != ShippingMethod.NoShipping && bestOffer != null) {
+			return String.format("\nShipping information:\n%s, %s\n",shippingMethod.getName(), bestOffer);
+		}
+		throw new RuntimeException("Error! Order has no shipping details yet!");
+	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		if(shippingMethod != ShippingMethod.NoShipping && bestOffer != null) {
-			builder.append(shippingMethod);
-			builder.append("\n\n");
-			builder.append(String.format("%s\n", bestOffer));
-		}
-		
+		builder.append(getShippingdDetails());
 		builder.append(super.toString());
 		return builder.toString();
 	}

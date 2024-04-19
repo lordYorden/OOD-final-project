@@ -1,17 +1,25 @@
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Stack;
 
 public class StoreFacade {
 	private Website website;
 	private Inventory inventory;
 	private Customer customer = new Customer("yarden", "0547731355");
+	private Contact DHLContact = new Contact("yarden", "0547731355");
+	private Contact FedExContact = new Contact("yarin", "0534298765");
 	private Stack<Product.OrderMemento> previousOrders; 
 	private static StoreFacade _instance = null;
+	private Invoiceable formatForAccountent = new FormatForAccountent();
+	private Invoiceable formatForCustomer = new FormatForCustomer();
 	
 	private StoreFacade() {
 		this.website = new Website();
 		this.inventory = new Inventory();
 		this.previousOrders = new Stack<>();
+		website.addObserver(new DHL(DHLContact));
+		website.addObserver(new FedEx(FedExContact));
 	}
 
 	public static StoreFacade getInstance() {
@@ -27,7 +35,22 @@ public class StoreFacade {
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
-	
+
+	public Invoiceable getFormatForAccountent() {
+		return formatForAccountent;
+	}
+
+	public void setFormatForAccountent(Invoiceable formatForAccountent) {
+		this.formatForAccountent = formatForAccountent;
+	}
+
+	public Invoiceable getFormatForCustomer() {
+		return formatForCustomer;
+	}
+
+	public void setFormatForCustomer(Invoiceable formatForCustomer) {
+		this.formatForCustomer = formatForCustomer;
+	}
 
 	public void updateProductStock(String serialNumber, int newStock) {
 		inventory.updateProductStock(serialNumber, newStock);
@@ -61,11 +84,12 @@ public class StoreFacade {
 		if(method != ShippingMethod.NoShipping) {
 			order = new ShippingOrder(orderSerialNum, customer, product, amount, method);
 			website.addNewOrder((ShippingOrder)order);
+			System.out.println(order);
 		}else {
 			order = new Order(orderSerialNum, customer, product, amount);
 		}
 		
-		previousOrders.add(product.createOrderMemento());
+		previousOrders.push(product.createOrderMemento());
 		product.addOrder(order);
 		product.decreaseStock(amount);
 	}
@@ -80,46 +104,45 @@ public class StoreFacade {
 		return inventory.getProductsOfType(type);
 	}
 
-	public void PrintOrdersOfProduct(String serialNumber) {
+	public String getOrderHistoryOfProduct(String serialNumber) {
 		Product product = inventory.findProduct(serialNumber);
-		
-		Iterator<Order> it = product.getOrders();
-		System.out.format("Orders of %s:\n",product);
-		
-		while(it.hasNext()){
-			System.out.println(it.next());
-		}
-		
+		Set<Invoiceable> formats = new HashSet<>();
+		formats.add(formatForAccountent);
+		return product.getOrderHistoryOfProduct(formats);
 	}
-
-	public String printProduct(String serialNumber) {
+	
+	@Deprecated
+	public String getOrderHistoryOfProduct(String serialNumber, Set<Invoiceable> formats) {
 		Product product = inventory.findProduct(serialNumber);
-		
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(String.format("Type: %s",
-				product.getProductType().getDescription()));
-		
-		buffer.append(String.format("\nName: %s\nSerialNo: %s\nCurrent stock %d",
-				product.getProductName(), product.getSerialNumber(), product.getStock()));
+		double profit = 0f;
 		
 		buffer.append("\nOrders:\n");
 		
 		Iterator<Order> orders = product.getOrders();
 		while(orders.hasNext()) {
-			buffer.append(orders.next());
+			Order order = orders.next();
+			
+			buffer.append(String.format("\nDetails for order number %s: \n", order.getSerialNumber()));
+			buffer.append(order);
+			
+			buffer.append("Invoices:\n");
+			
+			for (Invoiceable format : formats) {
+				buffer.append(order.getInvoice(format));
+			}
+			
+			profit += order.getTotalOrderProfit();
 		}
 		
+		buffer.append(String.format("\nTotal Profit for product: %s\n",
+				Product.toStringPrice(profit, product.getCurrency())));
 		
-		
-		
-		
-		
-		
-		
-		System.out.println(product);
-		
-		
-		
-		return serialNumber;
+		return buffer.toString();
+	}
+
+	public String getProductInfo(String serialNumber) {
+		Product product = inventory.findProduct(serialNumber);
+		return product.getProductInfo();
 	}
 }

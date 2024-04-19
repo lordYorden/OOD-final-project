@@ -6,9 +6,9 @@ public class FormatForCustomer implements Invoiceable{
 	@Override
 	public String getInvoice(Order order) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("For Customer: \n");
+		buffer.append("\nFor Customer: \n");
 		buffer.append(order);
-		buffer.append(String.format("\nTax Total: %s",
+		buffer.append(String.format("\nTax Total for Order: %s\n",
 				Product.toStringPrice(calcSalesTax(order.getPriceTotal()), order.getCurrency())));
 		return buffer.toString();
 	}

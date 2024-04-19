@@ -17,10 +17,6 @@ public class Order{
 		return product.getWeight() * amount;
 	}
 	
-	public String getOrderInvoice(Invoiceable format) {
-		return format.getInvoice(this);
-	}
-	
 	public double getTotalOrderProfit() {
 		return product.getProfit() * amount;
 	}
@@ -33,8 +29,8 @@ public class Order{
 		return customer;
 	}
 	
-	public String getInvoices() {
-		return product.getOrderInvoices(this);
+	public String getInvoice(Invoiceable format) {
+		return format.getInvoice(this);
 	}
 	
 	public void setCustomer(Customer customer) {
@@ -86,14 +82,14 @@ public class Order{
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		//builder.append("Order details: \n");
 		
+		builder.append("Product Description:\n");
 		builder.append(String.format("%s x %d %s\n",
-				product,
+				product.getProductName(),
 				amount, 
 				Product.toStringPrice(getTotalSellingPrice(), product.getCurrency())));
 		
-		builder.append(String.format("\nTotal: %s", Product.toStringPrice(getPriceTotal(), product.getCurrency())));
+		builder.append(String.format("\nTotal: %s\n", Product.toStringPrice(getPriceTotal(), product.getCurrency())));
 		return builder.toString();
 	}
 }

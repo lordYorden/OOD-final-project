@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 public class ProductSoldThroughWebsite extends Product {
 	
@@ -45,9 +47,14 @@ public class ProductSoldThroughWebsite extends Product {
 		return shippping.get(--selection);
 	}
 
+//	@Override
+//	public String getOrderInvoices(Order order) {
+//		throw new RuntimeException("Error! Can't output invoices for a Product intented for shipping!");
+//	}
+
 	@Override
-	public String getOrderInvoices(Order order) {
-		throw new RuntimeException("Error! Can't output invoices for a Product intented for shipping!");
+	public Set<Invoiceable> getInvoicesFormat() {
+		return new HashSet<>();
 	}
 
 }

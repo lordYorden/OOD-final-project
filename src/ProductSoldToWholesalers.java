@@ -1,3 +1,5 @@
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProductSoldToWholesalers extends Product {
 	
@@ -14,7 +16,9 @@ public class ProductSoldToWholesalers extends Product {
 	}
 
 	@Override
-	public String getOrderInvoices(Order order) {
-		return forAccountent.getInvoice(order);
+	public Set<Invoiceable> getInvoicesFormat() {
+		Set<Invoiceable> formats = new HashSet<>();
+		formats.add(forAccountent);
+		return formats;
 	}
 }

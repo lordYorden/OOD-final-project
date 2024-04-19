@@ -7,7 +7,7 @@ public enum MenuOption {
 	UpdateProductStock   (4,"Update Stock for a product"),
 	AddOrder             (5,"Add an Order"),
 	UndoOrder            (6,"Undo the most recent order"),
-	ShowProductInfo      (7,"Display Sales info for a product"),
+	ShowProductInfo      (7,"Display product info"),
 	ShowInventory        (8,"Display inventroy"),
 	PrintOrdersOfProduct (9,"Display order history for a product"),
 	Backup               (10,"Backup the entire system"),
