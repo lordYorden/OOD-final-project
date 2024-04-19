@@ -16,9 +16,8 @@ public abstract class Product {
 	private String serialNumber;
 	protected ProductType productType;
 	
-	public abstract ShippingMethod getShippingMethod();
 
-	public Product(String serialNumber, String productName, double costPrice, double sellingPrice, double productWeight, int stock) {
+	public Product(ProductType productType, String serialNumber, String productName, double costPrice, double sellingPrice, double productWeight, int stock) {
 		this.currency = "₪";
 		this.productName = productName;
 		this.costPrice = costPrice;
@@ -28,6 +27,9 @@ public abstract class Product {
 		this.serialNumber = serialNumber;
 		this.orders = new LinkedHashSet<>();
 	}
+	public abstract ShippingMethod getShippingMethod();
+	
+	public abstract String getOrderInvoices(Order order);
 
 	public ProductType getProductType() {
 		return productType;

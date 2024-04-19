@@ -1,4 +1,3 @@
-
 public class ShippingOrder extends Order{
 	
 	private Offer bestOffer;
@@ -20,6 +19,12 @@ public class ShippingOrder extends Order{
 	public void setBestOffer(Offer bestOffer) {
 		this.bestOffer = bestOffer;
 	}
+
+	@Override
+	public String getInvoices() {
+		throw new RuntimeException("Error! Can't output invoices for an order intented for shipping!");
+	}
+
 
 	@Override
 	public double getPriceTotal() {

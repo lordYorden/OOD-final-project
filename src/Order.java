@@ -33,8 +33,8 @@ public class Order{
 		return customer;
 	}
 	
-	public String getInvoices(Invoiceable format) {
-		return format.getInvoice(this);
+	public String getInvoices() {
+		return product.getOrderInvoices(this);
 	}
 	
 	public void setCustomer(Customer customer) {

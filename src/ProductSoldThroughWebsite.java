@@ -10,11 +10,10 @@ public class ProductSoldThroughWebsite extends Product {
 	
 	public ProductSoldThroughWebsite(String serialNumber, String productName, double costPrice, double sellingPrice, 
 			double productWeight, int stock, String destCountery, List<ShippingMethod> shippping) {
-		super(serialNumber, productName, costPrice, sellingPrice, productWeight,stock);
+		super(ProductType.SoldThroughWebsite, serialNumber, productName, costPrice, sellingPrice, productWeight,stock);
 		this.shippping = new ArrayList<>(shippping);
 		this.destCountery = destCountery;
 		this.currency = "$";
-		this.productType = ProductType.SoldThroughWebsite;
 	}
 
 	public String getDestCountery() {
@@ -44,6 +43,11 @@ public class ProductSoldThroughWebsite extends Product {
 		}while(selection < 1 || selection > shippping.size());
 		
 		return shippping.get(--selection);
+	}
+
+	@Override
+	public String getOrderInvoices(Order order) {
+		throw new RuntimeException("Error! Can't output invoices for a Product intented for shipping!");
 	}
 
 }
