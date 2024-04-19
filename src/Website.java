@@ -33,12 +33,12 @@ public class Website implements OrderObservable{
 	}
 
 	@Override
-	public void addObserver(OrderObserver observer) {
+	public void deleteObserver(OrderObserver observer) {
 		observers.remove(observer);
 	}
 
 	@Override
-	public void deleteObserver(OrderObserver observer) {
+	public void addObserver(OrderObserver observer) {
 		observers.add(observer);
 	}
 }
