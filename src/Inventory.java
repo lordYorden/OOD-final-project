@@ -1,24 +1,41 @@
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Stack;
 
-public class Inventory{
+public class Inventory implements Serializable{
 	
 	protected Set<Product> products;
+	private Stack<Product.OrderMemento> previousOrders;
 
 	public Inventory() {
 		this.products = new HashSet<>();
+		this.previousOrders = new Stack<>();
 	}
-
+	
 	public boolean addProduct(Product product) {
 		if(products.contains(product))
 			throw new IllegalArgumentException(String.format("Error! Product with the serial number: %s already exist!", product.getSerialNumber()));
 		return products.add(product);
 	}
 	
+	public boolean saveOrderSate(Product.OrderMemento orderState) {
+		return previousOrders.add(orderState);
+	}
+	
+	public void undoOrder() {
+		if(previousOrders.empty())
+			throw new RuntimeException("Error! No products were ordered yet!");
+		previousOrders.pop().setMemento();
+	}
+	
+	@Deprecated
 	public boolean addNewOrder(String serialNumber, Order order) {
 		Product product = findProduct(serialNumber);
-		return product.addOrder(order);
+		previousOrders.push(product.createOrderMemento());
+		product.addOrder(order);
+		return true;
 	}
 	
 	public boolean removeProduct(String serialNumber) {

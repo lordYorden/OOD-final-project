@@ -1,6 +1,6 @@
+import java.io.Serializable;
 
-
-public class ShippingOrder extends Order{
+public class ShippingOrder extends Order implements Serializable{
 	
 	private Offer bestOffer;
 	private ShippingMethod shippingMethod;

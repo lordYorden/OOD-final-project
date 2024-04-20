@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Customer {
+public class Customer implements Serializable{
 	String name;
 	String mobile;
 	

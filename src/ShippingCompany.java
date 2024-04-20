@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ShippingCompany implements OrderObserver{
+public abstract class ShippingCompany implements OrderObserver, Serializable{
 	protected Contact contact;
 	protected ShippingCompanies name;
 	protected List<ShippingCalculator> calculators;

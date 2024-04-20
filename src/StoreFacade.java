@@ -1,15 +1,15 @@
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.Stack;
+
+import javax.management.RuntimeErrorException;
 
 public class StoreFacade {
 	private Website website;
 	private Inventory inventory;
 	private Customer customer = new Customer("yarden", "0547731355");
 	private Contact DHLContact = new Contact("yarden", "0547731355");
-	private Contact FedExContact = new Contact("yarin", "0534298765");
-	private Stack<Product.OrderMemento> previousOrders; 
+	private Contact FedExContact = new Contact("yarin", "0534298765"); 
 	private static StoreFacade _instance = null;
 	private Invoiceable formatForAccountent = new FormatForAccountent();
 	private Invoiceable formatForCustomer = new FormatForCustomer();
@@ -17,7 +17,7 @@ public class StoreFacade {
 	private StoreFacade() {
 		this.website = new Website();
 		this.inventory = new Inventory();
-		this.previousOrders = new Stack<>();
+		//this.previousOrders = new Stack<>();
 		website.addObserver(new DHL(DHLContact));
 		website.addObserver(new FedEx(FedExContact));
 	}
@@ -26,6 +26,26 @@ public class StoreFacade {
 		if(_instance == null)
 			_instance = new StoreFacade();
 		return _instance;
+	}
+	
+	public void load(String filePath, InventoryBackupable backupable) {
+		try {
+			this.inventory = backupable.loadInventory(filePath);
+		} catch (Exception e) {
+			if(inventory == null)
+				this.inventory = new Inventory();
+			throw new RuntimeException(String.format("Error! Failed to load the previous state!\nError Details:%s\n",
+					e.getMessage()));
+		}
+	}
+	
+	public void save(String filePath, InventoryBackupable backupable) {
+		try {
+			backupable.saveInventory(filePath, this.inventory);
+		} catch (Exception e) {
+			throw new RuntimeException(String.format("Error! Failed to save the current state!\nError Details:%s\n",
+					e.getMessage()));
+		}
 	}
 	
 	public Customer getCustomer() {
@@ -80,7 +100,6 @@ public class StoreFacade {
 		}
 		
 		Order order = null;
-		
 		if(method != ShippingMethod.NoShipping) {
 			order = new ShippingOrder(orderSerialNum, customer, product, amount, method);
 			website.addNewOrder((ShippingOrder)order);
@@ -89,15 +108,12 @@ public class StoreFacade {
 			order = new Order(orderSerialNum, customer, product, amount);
 		}
 		
-		previousOrders.push(product.createOrderMemento());
+		inventory.saveOrderSate(product.createOrderMemento());
 		product.addOrder(order);
-		product.decreaseStock(amount);
 	}
 
 	public void undoOrder() {
-		if(previousOrders.empty())
-			throw new RuntimeException("Error! No products were ordered yet!");
-		previousOrders.pop().setMemento();
+		inventory.undoOrder();
 	}
 	
 	public String getProductsOfType(ProductType type) {

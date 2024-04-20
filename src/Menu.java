@@ -7,6 +7,8 @@ public class Menu {
 	
 	public static final Scanner input = new Scanner(System.in);
 	public static final StoreFacade facade = StoreFacade.getInstance();
+	public static final String FILE_NAME = "Inventory.db";
+	public static final InventoryBackupable BINARY_BACKUPABLE = new BinaryFileBackup();
 	
 	public static void main(String[] args) throws IOException {
 		MenuOption menuOption = null;
@@ -56,7 +58,15 @@ public class Menu {
 				case PrintOrdersOfProduct:
 					System.out.println("Enter the product's serial number: ");
 					String serialNumber = input.nextLine();
-					facade.getOrderHistoryOfProduct(serialNumber);
+					System.out.println(facade.getOrderHistoryOfProduct(serialNumber));
+					break;
+				case Backup:
+					facade.save(FILE_NAME, BINARY_BACKUPABLE);
+					System.out.println("Backup was successful!");
+					break;
+				case RestoreBackup:
+					facade.load(FILE_NAME, BINARY_BACKUPABLE);
+					System.out.println("Backup Restored!");
 					break;
 				default:
 					throw new RuntimeException("Not implemented yet!");
@@ -65,7 +75,8 @@ public class Menu {
 					break;
 				}
 			}catch(RuntimeException e) {
-				System.err.format("%s\nPress any key to continue....\n", e.getMessage());
+				System.err.format("%s\nPress any key to continue....\n",
+						e.getMessage());
 				System.in.read();
 			}
 			
@@ -96,10 +107,11 @@ public class Menu {
 	}
 
 	private static List<ShippingMethod> createShippingOptions(String name) {
-		boolean keepAdding = true;
+		boolean keepAdding = false;
 		List<ShippingMethod> methods = new ArrayList<>();
 		do 
 		{
+			keepAdding = false;
 			methods.add(ShippingMethod.getShippingMethodFromUser(input));
 			
 			System.out.println("Do you want to support more shipping methods for this product?");

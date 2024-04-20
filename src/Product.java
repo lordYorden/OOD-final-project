@@ -1,10 +1,11 @@
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public abstract class Product {
+public abstract class Product implements Serializable {
 	
 	protected String productName;
 	protected double costPrice;
@@ -75,8 +76,19 @@ public abstract class Product {
 		setStock(stock - amountOrder);
 	}
 	
-	public boolean addOrder(Order order) {
-		return this.orders.add(order);
+	public void addOrder(Order order) {
+		
+		if(order.getAmount() > stock) {
+			throw new IllegalArgumentException(
+					String.format("Error! Ordered amount exceeded avilable stock, Currently in stock: %d",
+							stock));
+		}
+		
+		if(orders.add(order)) {
+			decreaseStock(order.getAmount());
+		}
+		
+		throw new IllegalArgumentException(String.format("Error! Couldn't complete order number %s!", order.getSerialNumber()));	
 	}
 
 	public Iterator<Order> getOrders() {

@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Offer implements Comparable<Offer>{	
+public class Offer implements Comparable<Offer>, Serializable{	
 	private double baseShippingFee;
 	private double importTax;
 	private boolean includingImportTax;

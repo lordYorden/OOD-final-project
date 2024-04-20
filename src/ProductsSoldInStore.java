@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProductsSoldInStore extends Product {
+public class ProductsSoldInStore extends Product implements Serializable{
 	
 	private Invoiceable forCustomer;
 	private Invoiceable forAccountent;
