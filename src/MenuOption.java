@@ -1,17 +1,17 @@
 import java.util.Scanner;
 
 public enum MenuOption {
-	HardCoddedSystem     (1,"Start system with hard codded properties!"),
-	AddProduct          (2,"Add a product"),
-	RemoveProduct        (3,"Remove a product"),
-	UpdateProductStock   (4,"Update Stock for a product"),
-	AddOrder             (5,"Add an Order"),
-	UndoOrder            (6,"Undo the most recent order"),
-	ShowProductInfo      (7,"Display product info"),
-	ShowInventory        (8,"Display inventroy"),
-	PrintOrdersOfProduct (9,"Display order history for a product"),
-	Backup               (10,"Backup the entire system"),
-	RestoreBackup        (11,"Restore backedup data"),
+	HardCoddedSystem     (1,"(4.1) Start system with hard codded properties!"),
+	AddProduct          (2,"(4.2) Add a product"),
+	RemoveProduct        (3,"(4.3) Remove a product"),
+	UpdateProductStock   (4,"(4.4) Update Stock for a product"),
+	AddOrder             (5,"(4.5) Add an Order"),
+	UndoOrder            (6,"(4.6) Undo the most recent order"),
+	ShowProductInfo      (7,"(4.7) Display product info"),
+	ShowInventory        (8,"(4.8) Display inventroy"),
+	PrintOrdersOfProduct (9,"(4.9) Display order history for a product"),
+	Backup               (10,"(4.10) Backup the entire system"),
+	RestoreBackup        (11,"(4.10) Restore backedup data"),
 	Exit        		 (-1,"Exit");
 	
 	int value;

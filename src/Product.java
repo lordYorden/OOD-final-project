@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public abstract class Product implements Serializable {
+public abstract class Product implements Serializable, Profitable {
 	
 	protected String productName;
 	protected double costPrice;
@@ -16,10 +16,10 @@ public abstract class Product implements Serializable {
 	protected String currency;
 	private String serialNumber;
 	protected ProductType productType;
-	
+	public static final String DEFAULT_CURRENCY = "₪";
 
-	public Product(ProductType productType, String serialNumber, String productName, double costPrice, double sellingPrice, double productWeight, int stock) {
-		this.currency = "₪";
+	public Product(ProductType productType, String serialNumber, String productName, double costPrice, double sellingPrice, double productWeight, int stock, String currency) {
+		this.currency = currency;
 		this.productName = productName;
 		this.costPrice = costPrice;
 		this.sellingPrice = sellingPrice;
@@ -29,7 +29,21 @@ public abstract class Product implements Serializable {
 		this.orders = new LinkedHashSet<>();
 		this.productType = productType;
 	}
+	
+	public Product(ProductType productType, String serialNumber, String productName, double costPrice, double sellingPrice, double productWeight, int stock) {
+		this(productType, serialNumber, productName, costPrice, sellingPrice, productWeight, stock, DEFAULT_CURRENCY);
+	}
+	
+	
 	public abstract ShippingMethod getShippingMethod();
+	
+	public double getProfit() {
+		double profit = 0f;
+		for (Order order : orders) {
+			profit += order.getProfit();
+		}
+		return profit;
+	}
 
 	public ProductType getProductType() {
 		return productType;
@@ -53,7 +67,7 @@ public abstract class Product implements Serializable {
 		return weight;
 	}
 	
-	public double getProfit() {
+	public double getMargin() {
 		return sellingPrice-costPrice;
 	}
 
@@ -112,7 +126,6 @@ public abstract class Product implements Serializable {
 	
 	public String getOrderHistoryOfProduct(Set<Invoiceable> formats) {
 		StringBuffer buffer = new StringBuffer();
-		double profit = 0f;
 		
 		buffer.append("\nOrders:\n");
 		
@@ -124,7 +137,7 @@ public abstract class Product implements Serializable {
 		while(it.hasNext()) {
 			Order order = it.next();
 			
-			buffer.append(String.format("\nDetails for order number %s: \n", order.getSerialNumber()));
+			//buffer.append(String.format("\nDetails for order number %s: \n", order.getSerialNumber()));
 			buffer.append(order);
 			
 			buffer.append("Invoices:\n");
@@ -136,12 +149,10 @@ public abstract class Product implements Serializable {
 			for (Invoiceable format : formats) {
 				buffer.append(order.getInvoice(format));
 			}
-			
-			profit += order.getTotalOrderProfit();
 		}
 		
 		buffer.append(String.format("\nTotal Profit for product: %s\n",
-				Product.toStringPrice(profit, currency)));
+				Product.toStringPrice(getProfit(), currency)));
 		
 		return buffer.toString();
 	}
@@ -159,13 +170,21 @@ public abstract class Product implements Serializable {
 		
 		return buffer.toString();
 	}
+	
+	public static String toStringPrice(double price) {
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(String.format("%.2f", price));
+		sb.append(DEFAULT_CURRENCY);
+		return sb.toString();
+	}
 
 	public static String toStringPrice(double price, String currency) {
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append(String.format("%.2f", price));
 		sb.append(currency);
-		return sb.toString();//String.format("%.2f%c", price, currency);
+		return sb.toString();
 	}
 
 	@Override

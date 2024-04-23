@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
 
-public class Inventory implements Serializable{
+public class Inventory implements Serializable, Profitable{
 	
 	protected Set<Product> products;
 	private Stack<Product.OrderMemento> previousOrders;
@@ -78,9 +78,12 @@ public class Inventory implements Serializable{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Product currently in Store:\n");
 		for (Product product : products) {
-			builder.append(product);
+			builder.append(product.getProductInfo());
 			builder.append("\n");
 		}
+		
+		builder.append(String.format("\nTotal Profit for Store: %s\n",
+				Product.toStringPrice(getProfit())));;
 		return builder.toString();
 	}
 
@@ -97,6 +100,15 @@ public class Inventory implements Serializable{
 		}
 		return buffer.toString();
 		
+	}
+
+	@Override
+	public double getProfit() {
+		double profit = 0f;
+		for (Product product : products) {
+			profit += product.getProfit();
+		}
+		return profit;
 	}
 	
 	

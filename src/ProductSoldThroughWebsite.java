@@ -5,26 +5,17 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-public class ProductSoldThroughWebsite extends Product {
+public class ProductSoldThroughWebsite extends Product implements Serializable{
 	
 	private static final Scanner input = new Scanner(System.in);
-	private String destCountery;
+	public static final double DOLAR_RATE = 4.0;
 	private List<ShippingMethod> shippping;
 	
 	public ProductSoldThroughWebsite(String serialNumber, String productName, double costPrice, double sellingPrice, 
-			double productWeight, int stock, String destCountery, List<ShippingMethod> shippping) {
+			double productWeight, int stock, List<ShippingMethod> shippping) {
 		super(ProductType.SoldThroughWebsite, serialNumber, productName, costPrice, sellingPrice, productWeight,stock);
 		this.shippping = new ArrayList<>(shippping);
-		this.destCountery = destCountery;
 		this.currency = "$";
-	}
-
-	public String getDestCountery() {
-		return destCountery;
-	}
-
-	public void setDestCountery(String destCountery) {
-		this.destCountery = destCountery;
 	}
 	
 	@Override
@@ -48,14 +39,16 @@ public class ProductSoldThroughWebsite extends Product {
 		return shippping.get(--selection);
 	}
 
-//	@Override
-//	public String getOrderInvoices(Order order) {
-//		throw new RuntimeException("Error! Can't output invoices for a Product intented for shipping!");
-//	}
-
 	@Override
 	public Set<Invoiceable> getInvoicesFormat() {
 		return new HashSet<>();
 	}
+
+	@Override
+	public double getMargin() {
+		return super.getMargin() * DOLAR_RATE;
+	}
+	
+	
 
 }

@@ -11,7 +11,7 @@ public class ProductFactory {
 			return new ProductsSoldInStore(serialNumber,productName, costPrice, sellingPrice, productWeight, stock,
 					facade.getFormatForCustomer(), facade.getFormatForAccountent());
 		case SoldThroughWebsite:
-			return new ProductSoldThroughWebsite(serialNumber,productName, costPrice, sellingPrice, productWeight, stock, productName, shipping);
+			return new ProductSoldThroughWebsite(serialNumber,productName, costPrice, sellingPrice, productWeight, stock, shipping);
 		case SoldToWholesalers:
 			return new ProductSoldToWholesalers(serialNumber,productName, costPrice, sellingPrice, productWeight, stock,
 					facade.getFormatForAccountent());

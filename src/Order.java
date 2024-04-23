@@ -1,7 +1,7 @@
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Order implements Serializable{
+public class Order implements Serializable, Profitable{
 	private Customer customer; 
 	private Product product;
 	private int amount;
@@ -18,8 +18,8 @@ public class Order implements Serializable{
 		return product.getWeight() * amount;
 	}
 	
-	public double getTotalOrderProfit() {
-		return product.getProfit() * amount;
+	public double getProfit() {
+		return product.getMargin() * amount;
 	}
 	
 	public double getTotalSellingPrice() {
@@ -83,6 +83,9 @@ public class Order implements Serializable{
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
+		
+		builder.append(String.format("\nDetails for order number %s: \n", serialNumber));	
+		builder.append(String.format("Customer: %s\n", customer));   
 		
 		builder.append("Product Description:\n");
 		builder.append(String.format("%s x %d %s\n",

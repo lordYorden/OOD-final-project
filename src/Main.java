@@ -9,11 +9,11 @@ public class Main {
 		ship.add(ShippingMethod.StandardShipping);
 		Product p = new ProductSoldThroughWebsite("0256325889", "Joyride", 5, 20, 0.25, 2
 				//);
-				,"Isreal", ship);
+				, ship);
 		
 		ShippingMethod shippingMethod = p.getShippingMethod();
 		//TODO checks for stock when creating order
-		ShippingOrder o = new ShippingOrder("156455263", new Customer("Yarin", "0534298765"), p, 4, shippingMethod);
+		ShippingOrder o = new ShippingOrder("156455263", new Customer("Yarin", "0534298765"), p, 4, shippingMethod,"Isreal");
 		ShippingCompany shippingCompany1 = new FedEx(new Contact("Shay", "0546092715"));
 		ShippingCompany shippingCompany2 = new DHL(new Contact("itay", "0549411471"));
 		

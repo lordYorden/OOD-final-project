@@ -1,8 +1,5 @@
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-
-import javax.management.RuntimeErrorException;
 
 public class StoreFacade {
 	private Website website;
@@ -89,7 +86,7 @@ public class StoreFacade {
 		return inventory.toString();
 	}
 
-	public void addOrder(String serialNumber, int amount, String orderSerialNum) {
+	public void addOrder(String serialNumber, int amount, String orderSerialNum, String destCountry) {
 		Product product = inventory.findProduct(serialNumber);
 		ShippingMethod method = product.getShippingMethod();
 		
@@ -101,7 +98,7 @@ public class StoreFacade {
 		
 		Order order = null;
 		if(method != ShippingMethod.NoShipping) {
-			order = new ShippingOrder(orderSerialNum, customer, product, amount, method);
+			order = new ShippingOrder(orderSerialNum, customer, product, amount, method, destCountry);
 			website.addNewOrder((ShippingOrder)order);
 			System.out.println(order);
 		}else {
@@ -125,36 +122,6 @@ public class StoreFacade {
 		Set<Invoiceable> formats = new HashSet<>();
 		formats.add(formatForAccountent);
 		return product.getOrderHistoryOfProduct(formats);
-	}
-	
-	@Deprecated
-	public String getOrderHistoryOfProduct(String serialNumber, Set<Invoiceable> formats) {
-		Product product = inventory.findProduct(serialNumber);
-		StringBuffer buffer = new StringBuffer();
-		double profit = 0f;
-		
-		buffer.append("\nOrders:\n");
-		
-		Iterator<Order> orders = product.getOrders();
-		while(orders.hasNext()) {
-			Order order = orders.next();
-			
-			buffer.append(String.format("\nDetails for order number %s: \n", order.getSerialNumber()));
-			buffer.append(order);
-			
-			buffer.append("Invoices:\n");
-			
-			for (Invoiceable format : formats) {
-				buffer.append(order.getInvoice(format));
-			}
-			
-			profit += order.getTotalOrderProfit();
-		}
-		
-		buffer.append(String.format("\nTotal Profit for product: %s\n",
-				Product.toStringPrice(profit, product.getCurrency())));
-		
-		return buffer.toString();
 	}
 
 	public String getProductInfo(String serialNumber) {

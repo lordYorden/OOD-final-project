@@ -3,14 +3,24 @@ import java.io.Serializable;
 public class ShippingOrder extends Order implements Serializable{
 	
 	private Offer bestOffer;
+	private String destCountery;
 	private ShippingMethod shippingMethod;
 	
 
 	public ShippingOrder(String serialNumber, Customer customer, Product product, int amount,
-			ShippingMethod shippingMethod) {
+			ShippingMethod shippingMethod, String destCountery) {
 		super(serialNumber, customer, product, amount);
 		this.bestOffer = null;
 		this.shippingMethod = shippingMethod;
+		this.destCountery = destCountery;
+	}
+
+	public String getDestCountery() {
+		return destCountery;
+	}
+
+	public void setDestCountery(String destCountery) {
+		this.destCountery = destCountery;
 	}
 	
 	

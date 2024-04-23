@@ -41,7 +41,9 @@ public class Menu {
 					int amount = Integer.parseInt(input.nextLine());
 					System.out.println("Enter the order's serial number: ");
 					String orderSerialNum = input.nextLine();
-					facade.addOrder(serialNum, amount, orderSerialNum);
+					System.out.println("To which country do you want to send it?");
+					String destCountry = input.nextLine();
+					facade.addOrder(serialNum, amount, orderSerialNum, destCountry);
 					break;
 				case UndoOrder:
 					facade.undoOrder();
@@ -78,6 +80,8 @@ public class Menu {
 				System.err.format("%s\nPress any key to continue....\n",
 						e.getMessage());
 				System.in.read();
+			}finally {
+				System.out.format("%s was successful!\n", menuOption.getDescription());
 			}
 			
 		}while(menuOption != MenuOption.Exit);

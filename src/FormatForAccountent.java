@@ -7,7 +7,7 @@ public class FormatForAccountent implements Invoiceable {
 		buffer.append("\nFor Accountent: \n");
 		buffer.append(order);
 		buffer.append(String.format("\nProfit Total for Order: %s\n",
-				Product.toStringPrice(order.getTotalOrderProfit(), order.getCurrency())));
+				Product.toStringPrice(order.getProfit(), order.getCurrency())));
 		return buffer.toString();
 	}
 
