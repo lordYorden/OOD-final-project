@@ -1,6 +1,8 @@
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.management.RuntimeErrorException;
+
 public class StoreFacade {
 	private Website website;
 	private Inventory inventory;
@@ -45,6 +47,21 @@ public class StoreFacade {
 		}
 	}
 	
+	public void hardCodedQue() {
+		ProductType type = null;
+		Product product = null;
+		
+		type = ProductType.SoldThroughWebsite;
+		product = ProductFactory.createProduct(type, "abc", "Bamaba bisly mix", 5.20, 11.90, 0.7, 11);
+		((Shippable) product).addShippingMethod(ShippingMethod.ExpressShipping);
+		addProduct(type,product);
+		
+		product = ProductFactory.createProduct(type, "defg", "Bamaba bisly mix", 5.20, 11.90, 0.7, 11);
+		((Shippable) product).addShippingMethod(ShippingMethod.ExpressShipping);
+		addProduct(type,product);
+		
+	}
+	
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -78,6 +95,10 @@ public class StoreFacade {
 	}
 
 	public void addProduct(ProductType type, Product product) {
+		if(product instanceof Shippable && !((Shippable) product).hasShippingMethod()) {
+			throw new IllegalArgumentException("Error! A shiippble product has no available shipping method!");
+		}
+
 		inventory.addProduct(product);
 	}
 

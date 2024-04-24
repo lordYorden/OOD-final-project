@@ -101,34 +101,35 @@ public class Menu {
 		System.out.println("How many are in stock? ");
 		int stock = Integer.parseInt(input.nextLine());
 		
-		List<ShippingMethod> methods = null;
-		if(type == ProductType.SoldThroughWebsite) {
-			methods = createShippingOptions(name);
+		Product product = null;
+		product = ProductFactory.createProduct(type, serial, name, costPrice, sellingPrice, weight, stock);
+		
+		if(product instanceof Shippable) {
+			setShippingMethods((Shippable) product);
 		}
 		
-		Product product = ProductFactory.createProduct(type, serial, name, costPrice, sellingPrice, weight, stock, methods);
 		facade.addProduct(type, product);
 	}
 
-	private static List<ShippingMethod> createShippingOptions(String name) {
+	private static void setShippingMethods(Shippable shippable) {
 		boolean keepAdding = false;
-		List<ShippingMethod> methods = new ArrayList<>();
 		do 
 		{
-			keepAdding = false;
-			methods.add(ShippingMethod.getShippingMethodFromUser(input));
+			try {
+			shippable.addShippingMethod(ShippingMethod.getShippingMethodFromUser(input));
+			}catch (RuntimeException e) {
+				System.err.print(e.getMessage());
+				continue;
+			}
 			
-			System.out.println("Do you want to support more shipping methods for this product?");
+			System.out.println("Do you want to support more shipping methods?");
 			keepAdding = input.nextBoolean();
 			
-			if (methods.size() == 0 /* || methods.get(0) == ShippingMethod.NoShipping */) {
-				System.out.println("Error!Must select at least one!");
+			if (!shippable.hasShippingMethod() && !keepAdding) {
+				System.out.println("Error! Must select at least one!");
 				keepAdding = true;
 			}
 			
 		}while(keepAdding);
-		
-		return methods;
-		
 	}
 }

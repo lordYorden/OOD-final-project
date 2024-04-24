@@ -5,16 +5,25 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-public class ProductSoldThroughWebsite extends Product implements Serializable{
+import javax.management.RuntimeErrorException;
+
+public class ProductSoldThroughWebsite extends Product implements Serializable, Shippable{
 	
 	private static final Scanner input = new Scanner(System.in);
 	public static final double DOLAR_RATE = 4.0;
-	private List<ShippingMethod> shippping;
+	private List<ShippingMethod> shipppingMethods;
 	
 	public ProductSoldThroughWebsite(String serialNumber, String productName, double costPrice, double sellingPrice, 
-			double productWeight, int stock, List<ShippingMethod> shippping) {
+			double productWeight, int stock, List<ShippingMethod> shipppingMethods) {
 		super(ProductType.SoldThroughWebsite, serialNumber, productName, costPrice, sellingPrice, productWeight,stock);
-		this.shippping = new ArrayList<>(shippping);
+		this.shipppingMethods = new ArrayList<>(shipppingMethods);
+		this.currency = "$";
+	}
+	
+	public ProductSoldThroughWebsite(String serialNumber, String productName, double costPrice, double sellingPrice, 
+			double productWeight, int stock) {
+		super(ProductType.SoldThroughWebsite, serialNumber, productName, costPrice, sellingPrice, productWeight,stock);
+		this.shipppingMethods = new ArrayList<>();
 		this.currency = "$";
 	}
 	
@@ -26,7 +35,7 @@ public class ProductSoldThroughWebsite extends Product implements Serializable{
 		do{
 			i = 1;
 			System.out.println("Select the shimpment type: ");
-			for (ShippingMethod shippingMethod : shippping) {
+			for (ShippingMethod shippingMethod : shipppingMethods) {
 				System.out.format("%d. %s\n",i, shippingMethod.getName());
 				i++;
 			}
@@ -34,9 +43,9 @@ public class ProductSoldThroughWebsite extends Product implements Serializable{
 			selection = Integer.parseInt(input.nextLine());
 			
 			
-		}while(selection < 1 || selection > shippping.size());
+		}while(selection < 1 || selection > shipppingMethods.size());
 		
-		return shippping.get(--selection);
+		return shipppingMethods.get(--selection);
 	}
 
 	@Override
@@ -47,6 +56,29 @@ public class ProductSoldThroughWebsite extends Product implements Serializable{
 	@Override
 	public double getMargin() {
 		return super.getMargin() * DOLAR_RATE;
+	}
+
+	@Override
+	public void addShippingMethod(ShippingMethod method) {
+		if(!shipppingMethods.contains(method)) {
+			shipppingMethods.add(method);
+			return;
+		}
+		throw new RuntimeException("Error! The product already supports this shipping method!");
+		
+	}
+
+	@Override
+	public void removeShippingMethod(ShippingMethod method) {
+		shipppingMethods.remove(method);
+		if(shipppingMethods.isEmpty()) {
+			throw new RuntimeException("Error! The product dosen't have any shipping methods available anymore, Please add at least one!");
+		}
+	}
+
+	@Override
+	public boolean hasShippingMethod() {
+		return !shipppingMethods.isEmpty();
 	}
 	
 	
