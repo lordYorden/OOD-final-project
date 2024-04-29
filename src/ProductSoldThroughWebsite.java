@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import javax.management.RuntimeErrorException;
-
 public class ProductSoldThroughWebsite extends Product implements Serializable, Shippable{
 	
 	private static final Scanner input = new Scanner(System.in);

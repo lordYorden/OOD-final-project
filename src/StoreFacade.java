@@ -1,7 +1,6 @@
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
-
-import javax.management.RuntimeErrorException;
 
 public class StoreFacade {
 	private Website website;
@@ -207,6 +206,18 @@ public class StoreFacade {
 
 	public void undoOrder() {
 		inventory.undoOrder();
+	}
+	
+	public String getSimpleInventory() {
+		StringBuffer buffer = new StringBuffer();
+		Iterator<Product> it = inventory.iterator();
+		buffer.append("Product currently in Store:\n");
+		while (it.hasNext()) {
+			Product product = (Product) it.next();
+			buffer.append(product);
+			buffer.append("\n");
+		}
+		return buffer.toString();
 	}
 	
 	public String getProductsOfType(ProductType type) {

@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Stack;
 
-public class Inventory implements Serializable, Profitable{
+public class Inventory implements Serializable, Profitable, Iterable<Product>{
 	
 	protected Set<Product> products;
 	private Stack<Product.OrderMemento> previousOrders;
@@ -30,13 +30,6 @@ public class Inventory implements Serializable, Profitable{
 		previousOrders.pop().setMemento();
 	}
 	
-	@Deprecated
-	public boolean addNewOrder(String serialNumber, Order order) {
-		Product product = findProduct(serialNumber);
-		previousOrders.push(product.createOrderMemento());
-		product.addOrder(order);
-		return true;
-	}
 	
 	public boolean removeProduct(String serialNumber) {
 		Product product = findProduct(serialNumber);
@@ -47,16 +40,12 @@ public class Inventory implements Serializable, Profitable{
 	
 	public Iterator<Order> getOrdersOfProduct(String serialNumber){
 		Product product = findProduct(serialNumber);
-		return product.getOrders();
+		return product.iterator();
 	}
 	
 	public Iterator<Product> getProducts() {
 		return products.iterator();
 	}
-	
-//	public boolean doseProductExist(String serialNumber) {
-//		return products.contains(ProductFactory.createProduct(null, serialNumber, null, 0, 0, 0, 0, null));
-//	}
 	
 	public Product findProduct(String serialNumber) {
 		for (Iterator<Product> it = products.iterator(); it.hasNext(); ) {
@@ -78,12 +67,10 @@ public class Inventory implements Serializable, Profitable{
 		StringBuilder builder = new StringBuilder();
 		builder.append("Product currently in Store:\n");
 		
-		if(products.isEmpty())
-			throw new RuntimeException("Error! No products were added!");
-		
-		for (Product product : products) {
+		Iterator<Product> it = iterator();
+		while (it.hasNext()) {
+			Product product = (Product) it.next();
 			builder.append(product.getProductInfo());
-			//builder.append("\n");
 		}
 		
 		builder.append(String.format("\nTotal Profit for Store: %s\n",
@@ -113,6 +100,13 @@ public class Inventory implements Serializable, Profitable{
 			profit += product.getProfit();
 		}
 		return profit;
+	}
+
+	@Override
+	public Iterator<Product> iterator() {
+		if(products.isEmpty())
+			throw new RuntimeException("Error! No products were added yet!");
+		return products.iterator();
 	}
 	
 	

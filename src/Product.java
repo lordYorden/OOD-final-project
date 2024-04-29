@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public abstract class Product implements Serializable, Profitable {
+public abstract class Product implements Serializable, Profitable, Iterable<Order> {
 	
 	protected String productName;
 	protected double costPrice;
@@ -106,7 +106,8 @@ public abstract class Product implements Serializable, Profitable {
 		throw new IllegalArgumentException(String.format("Error! Couldn't complete order number %s!", order.getSerialNumber()));	
 	}
 
-	public Iterator<Order> getOrders() {
+	@Override
+	public Iterator<Order> iterator() {
 		if(orders.isEmpty())
 			throw new RuntimeException("Error! No products were ordered yet!");
 		return orders.iterator();
@@ -122,6 +123,7 @@ public abstract class Product implements Serializable, Profitable {
 		builder.append("\n");
 		builder.append("SerialNo: ");
 		builder.append(serialNumber);
+		builder.append(String.format("\nType: %s\n",productType.getDescription()));
 		return builder.toString();
 	}
 	

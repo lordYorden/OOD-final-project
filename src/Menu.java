@@ -25,46 +25,32 @@ public class Menu {
 					addProduct(type);
 					break;
 				case RemoveProduct:
+					System.out.println(facade.getSimpleInventory());
 					System.out.println("Enter the product's serial number: ");
 					facade.removeProduct(input.nextLine());
 					break;
 				case UpdateProductStock:
-					System.out.println("Enter the product's serial number: ");
-					String serial = input.nextLine();
-					System.out.println("How many are in stock now? ");
-					int newStock = Integer.parseInt(input.nextLine());				
-					facade.updateProductStock(serial, newStock);
+					updateStock();
 					break;
 				case AddOrder:
-					type = ProductType.getProductTypeFromUser(input);
-					System.out.println(facade.getProductsOfType(type));
-					System.out.println("Enter the product's serial number: ");
-					String serialNum = input.nextLine();
-					System.out.println("How many would you like to order? ");
-					int amount = Integer.parseInt(input.nextLine());
-					System.out.println("Enter the order's serial number: ");
-					String orderSerialNum = input.nextLine();
-					//TODO condition dest country
-					System.out.println("To which country do you want to send it?");
-					String destCountry = input.nextLine();
-					facade.addOrder(serialNum, amount, orderSerialNum, destCountry);
+					addOrder();
 					break;
 				case UndoOrder:
 					facade.undoOrder();
 					System.out.println("Order was successfully canceled!");
 					break;
 				case ShowProductInfo:
+					System.out.println(facade.getSimpleInventory());
 					System.out.println("Enter the product's serial number: ");
-					String serialNumber1 = input.nextLine();
-					System.out.println(facade.getProductInfo(serialNumber1));
+					System.out.println(facade.getProductInfo(input.nextLine()));
 					break;
 				case ShowInventory:
 					System.out.println(facade);
 					break;
 				case PrintOrdersOfProduct:
+					System.out.println(facade.getSimpleInventory());
 					System.out.println("Enter the product's serial number: ");
-					String serialNumber = input.nextLine();
-					System.out.println(facade.getOrderHistoryOfProduct(serialNumber));
+					System.out.println(facade.getOrderHistoryOfProduct(input.nextLine()));
 					break;
 				case Backup:
 					facade.save(FILE_NAME, BINARY_BACKUPABLE);
@@ -90,6 +76,15 @@ public class Menu {
 			
 		}while(menuOption != MenuOption.Exit);
 	}
+	
+	private static void updateStock() {
+		System.out.println(facade.getSimpleInventory());
+		System.out.println("Enter the product's serial number: ");
+		String serial = input.nextLine();
+		System.out.println("How many are in stock now? ");
+		int newStock = Integer.parseInt(input.nextLine());				
+		facade.updateProductStock(serial, newStock);
+	}
 
 	private static void addProduct(ProductType type) {
 		System.out.println("Enter the product's serial number: ");
@@ -113,6 +108,29 @@ public class Menu {
 		}
 		
 		facade.addProduct(type, product);
+	}
+	
+	public static void addOrder() {
+		ProductType type = ProductType.getProductTypeFromUser(input);
+		System.out.println(facade.getProductsOfType(type));
+		System.out.println("Enter the product's serial number: ");
+		String serialNum = input.nextLine();
+		System.out.println("How many would you like to order? ");
+		int amount = Integer.parseInt(input.nextLine());
+		System.out.println("Enter the order's serial number: ");
+		String orderSerialNum = input.nextLine();
+		
+		if(type == ProductType.SoldInStore) {
+			System.out.println("To which country do you want to send it?");
+			String destCountry = input.nextLine();
+			facade.addOrder(serialNum, amount, orderSerialNum, destCountry);
+		}else {
+			facade.addOrder(serialNum, amount, orderSerialNum);
+		}
+//		//TODO condition dest country
+//		System.out.println("To which country do you want to send it?");
+//		String destCountry = input.nextLine();
+//		facade.addOrder(serialNum, amount, orderSerialNum, destCountry);
 	}
 
 	private static void setShippingMethods(Shippable shippable) {
