@@ -17,6 +17,9 @@ public class Menu {
 			try {
 				menuOption = MenuOption.getMenuOptionFromUser(input);
 				switch (menuOption) {
+				case HardCoddedSystem:
+					facade.hardCodedSystem();
+					break;
 				case AddProduct:
 					type = ProductType.getProductTypeFromUser(input);
 					addProduct(type);
@@ -41,6 +44,7 @@ public class Menu {
 					int amount = Integer.parseInt(input.nextLine());
 					System.out.println("Enter the order's serial number: ");
 					String orderSerialNum = input.nextLine();
+					//TODO condition dest country
 					System.out.println("To which country do you want to send it?");
 					String destCountry = input.nextLine();
 					facade.addOrder(serialNum, amount, orderSerialNum, destCountry);

@@ -47,19 +47,83 @@ public class StoreFacade {
 		}
 	}
 	
-	public void hardCodedQue() {
+	public void hardCodedSystem() {
 		ProductType type = null;
 		Product product = null;
 		
 		type = ProductType.SoldThroughWebsite;
-		product = ProductFactory.createProduct(type, "abc", "Bamaba bisly mix", 5.20, 11.90, 0.7, 11);
+		product = ProductFactory.createProduct(type, "QhBIiZs8", "Bamaba bisly mix", 5.20, 11.90, 0.7, 12);
 		((Shippable) product).addShippingMethod(ShippingMethod.ExpressShipping);
 		addProduct(type,product);
 		
-		product = ProductFactory.createProduct(type, "defg", "Bamaba bisly mix", 5.20, 11.90, 0.7, 11);
+		addOrder(product, 2,"P8maOpR3", "Isreal", ShippingMethod.ExpressShipping);
+		addOrder(product, 6,"WddbgwbS", "Massachusetts", ShippingMethod.ExpressShipping);
+		addOrder(product, 3, "Qw4Zx771", "France", ShippingMethod.ExpressShipping);
+		
+		
+		//type = ProductType.SoldThroughWebsite;
+		product = ProductFactory.createProduct(type, "2KmP9nmW", "Big Mouth Billy Bass", 21.5, 42.98, 0.89, 50);
 		((Shippable) product).addShippingMethod(ShippingMethod.ExpressShipping);
+		((Shippable) product).addShippingMethod(ShippingMethod.StandardShipping);
 		addProduct(type,product);
 		
+		addOrder(product, 1,"BfopAp70", "Isreal", ShippingMethod.StandardShipping);
+		addOrder(product, 21,"ANgIuLYK", "Missouri", ShippingMethod.ExpressShipping);
+		addOrder(product, 1, "GAHGTp6q", "Italy", ShippingMethod.StandardShipping);
+		
+		
+		
+		product = ProductFactory.createProduct(type, "msJ3sijt", "Darth Wader's Lightsaber", 12.69, 40.99, 1, 12);
+		((Shippable) product).addShippingMethod(ShippingMethod.ExpressShipping); //very delicate
+		addProduct(type,product);
+		
+		addOrder(product, 5,"BfopAp70", "Isreal", ShippingMethod.StandardShipping);
+		addOrder(product, 1,"ANgIuLYK", "Missouri", ShippingMethod.ExpressShipping);
+		addOrder(product, 2, "GAHGTp6q", "Ohio", ShippingMethod.StandardShipping);
+		
+		type = ProductType.SoldToWholesalers;
+		product = ProductFactory.createProduct(type, "rAwj6nze", "240oz of Sweet corn", 200, 311.99, 7.4, 100);
+		addProduct(type,product);
+		
+		addOrder(product, 20,"qbwVOowE", null, ShippingMethod.NoShipping);
+		addOrder(product, 25,"PivEpkmx", null, ShippingMethod.NoShipping);
+		addOrder(product, 12,"W8HAxtj0", null, ShippingMethod.NoShipping);
+		
+		product = ProductFactory.createProduct(type, "dSkTvsTF", "100 pack of Toilet Paper", 400, 620.99, 4.3, 100);
+		addProduct(type,product);
+		
+		addOrder(product, 23,"i8VaZxvK", null, ShippingMethod.NoShipping);
+		addOrder(product, 15,"zsImoUqB", null, ShippingMethod.NoShipping);
+		addOrder(product, 12,"2Yq7xNTu", null, ShippingMethod.NoShipping);
+		
+		product = ProductFactory.createProduct(type, "XToWdT6Y", "Cheder Cheese wheel", 322.6, 450.45, 35, 20);
+		addProduct(type,product);
+		
+		addOrder(product, 1,"0Tsr1ecp", null, ShippingMethod.NoShipping);
+		addOrder(product, 1,"vIAKmIzF", null, ShippingMethod.NoShipping);
+		addOrder(product, 1,"pJ90S1hT", null, ShippingMethod.NoShipping);
+		
+		type = ProductType.SoldInStore;
+		product = ProductFactory.createProduct(type, "W15NJRzh", "Canned Sweet corn", 3, 10, 0.55, 30);
+		addProduct(type,product);
+		
+		addOrder(product, 2,"ecKU63Bc", null, ShippingMethod.NoShipping);
+		addOrder(product, 3,"DPXQYJWX", null, ShippingMethod.NoShipping);
+		addOrder(product, 5,"6BrTc4LR", null, ShippingMethod.NoShipping);
+		
+		product = ProductFactory.createProduct(type, "6Ok0sJ5M", "15 pack of Toilet Paper", 15.9, 45.99, 0.83, 20);
+		addProduct(type,product);
+		
+		addOrder(product, 2,"Ab4V8hyj", null, ShippingMethod.NoShipping);
+		addOrder(product, 1,"bCKRYNqo", null, ShippingMethod.NoShipping);
+		addOrder(product, 1,"VwF57OBs", null, ShippingMethod.NoShipping);
+		
+		product = ProductFactory.createProduct(type, "3dkWHTfB", "Cheder Cheese 200 gram", 8, 11, 0.25, 15);
+		addProduct(type,product);
+		
+		addOrder(product, 1,"vuI4pifI", null, ShippingMethod.NoShipping);
+		addOrder(product, 2,"E82q0yCN", null, ShippingMethod.NoShipping);
+		addOrder(product, 1,"1bA9JfBh", null, ShippingMethod.NoShipping);
 	}
 	
 	public Customer getCustomer() {
@@ -106,10 +170,9 @@ public class StoreFacade {
 	public String toString() {
 		return inventory.toString();
 	}
-
-	public void addOrder(String serialNumber, int amount, String orderSerialNum, String destCountry) {
-		Product product = inventory.findProduct(serialNumber);
-		ShippingMethod method = product.getShippingMethod();
+	
+	public void addOrder(Product product, int amount, String orderSerialNum, String destCountry, ShippingMethod method) {
+		//ShippingMethod method = product.getShippingMethod();
 		
 		if(amount > product.getStock()) {
 			throw new IllegalArgumentException(
@@ -128,6 +191,18 @@ public class StoreFacade {
 		
 		inventory.saveOrderSate(product.createOrderMemento());
 		product.addOrder(order);
+	}
+	
+	public void addOrder(String serialNumber, int amount, String orderSerialNum) {
+		Product product = inventory.findProduct(serialNumber);
+		ShippingMethod method = product.getShippingMethod();
+		addOrder(product, amount, orderSerialNum, null, method);
+	}
+
+	public void addOrder(String serialNumber, int amount, String orderSerialNum, String destCountry) {
+		Product product = inventory.findProduct(serialNumber);
+		ShippingMethod method = product.getShippingMethod();
+		addOrder(product, amount, orderSerialNum, destCountry, method);
 	}
 
 	public void undoOrder() {

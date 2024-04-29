@@ -100,6 +100,7 @@ public abstract class Product implements Serializable, Profitable {
 		
 		if(orders.add(order)) {
 			decreaseStock(order.getAmount());
+			return;
 		}
 		
 		throw new IllegalArgumentException(String.format("Error! Couldn't complete order number %s!", order.getSerialNumber()));	
@@ -200,7 +201,7 @@ public abstract class Product implements Serializable, Profitable {
 		return serialNumber.equals(other.serialNumber);
 	}
 	
-	public static class OrderMemento{
+	public static class OrderMemento implements Serializable{
 		private Product product;
 		private Set<Order> orders;
 		private int currentStock;

@@ -77,9 +77,13 @@ public class Inventory implements Serializable, Profitable{
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Product currently in Store:\n");
+		
+		if(products.isEmpty())
+			throw new RuntimeException("Error! No products were added!");
+		
 		for (Product product : products) {
 			builder.append(product.getProductInfo());
-			builder.append("\n");
+			//builder.append("\n");
 		}
 		
 		builder.append(String.format("\nTotal Profit for Store: %s\n",

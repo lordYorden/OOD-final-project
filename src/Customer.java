@@ -29,7 +29,7 @@ public class Customer implements Serializable{
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(customerName);
-		builder.append(", mobile:");
+		builder.append(", mobile: ");
 		builder.append(mobile);
 		return builder.toString();
 	}
