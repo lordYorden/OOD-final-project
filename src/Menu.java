@@ -66,12 +66,13 @@ public class Menu {
 					System.out.println("Bye Bye!");
 					break;
 				}
+				//if error wasn't thrown
+				System.out.format("%s was successful!\n", menuOption.getDescription());
+				
 			}catch(RuntimeException e) {
 				System.err.format("%s\nPress any key to continue....\n",
 						e.getMessage());
 				System.in.read();
-			}finally {
-				System.out.format("%s was successful!\n", menuOption.getDescription());
 			}
 			
 		}while(menuOption != MenuOption.Exit);
@@ -120,7 +121,7 @@ public class Menu {
 		System.out.println("Enter the order's serial number: ");
 		String orderSerialNum = input.nextLine();
 		
-		if(type == ProductType.SoldInStore) {
+		if(type == ProductType.SoldThroughWebsite) {
 			System.out.println("To which country do you want to send it?");
 			String destCountry = input.nextLine();
 			facade.addOrder(serialNum, amount, orderSerialNum, destCountry);

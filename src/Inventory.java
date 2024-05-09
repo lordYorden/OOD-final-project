@@ -80,6 +80,10 @@ public class Inventory implements Serializable, Profitable, Iterable<Product>{
 
 	public String getProductsOfType(ProductType type) {
 		
+		if(products.isEmpty()) {
+			throw new RuntimeException(String.format("No Product of type: %s were added yet!", type.getDescription()));
+		}
+		
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(type.getDescription());
 		buffer.append(":\n");
